@@ -1,0 +1,62 @@
+\ProvidesPackage{macros}
+
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}
+\RequirePackage{mathtools}
+\RequirePackage{xparse}
+
+\NewDocumentCommand{\Ex}{O{} m}{%
+  \mathbb{E}_{#1}\left[ #2 \right]
+}%
+
+\NewDocumentCommand{\Ug}{s O{}}{%
+  \IfBooleanTF #1 {%
+    \overline{\mathcal{U}}
+  }{%
+    \mathcal{U}_{#2}
+  }
+}
+
+\NewDocumentCommand{\Lg}{o}{%
+  \IfNoValueTF{#1}{%
+    \mathcal{L}
+  }{%
+    \mathcal{L}_{#1}
+  }
+}
+
+\NewDocumentCommand{\N}{s}{
+  \mathbb{N}\IfNoValueF{#1}{^*}
+}
+
+\newcommand{\cl}[1]{\mathcal{#1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\dequal}{\overset{d}{=}}
+\newcommand{\dconv}{\xrightarrow{d}}
+\newcommand{\pconv}{\xrightarrow{p}}
+\newcommand{\Pb}[1]{\mathbb{P}\left( #1 \right)}
+%\newcommand{\Ex}[1]{\mathbb{E}\left[ #1 \right]}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\pp}{2^{[p]}}
+\newcommand{\rangeS}[1]{\emptyset \neq #1 \subset [p]}
+\newcommand{\range}[1]{#1 \in [p]}
+\DeclareMathOperator{\Var}{Var}
+%\newcommand{\defeq}{\vcentcolon=} Use \coloneqq
+
+\newcommand{\cF}{\mathcal{F}}
+\newcommand\restr[2]{{% we make the whole thing an ordinary symbol
+  \left.\kern-\nulldelimiterspace % automatically resize the bar with \right
+  #1 % the function
+  \vphantom{\big|} % pretend it's a little taller at normal size
+  \right|_{#2} % this is the delimiter
+  }}
+  
+\newtheorem{theorem}{Theorem}
+
+% \renewcommand{\epsilon}{\varepsilon}
+% \renewcommand{\theta}{\vartheta}
+% \renewcommand{\kappa}{\varkappa}
+% \renewcommand{\rho}{\varrho} 
+\renewcommand{\phi}{\varphi}
