@@ -1,33 +1,31 @@
 \ProvidesPackage{macros}
 
-\RequirePackage{amsmath}
+\RequirePackage{amsmath, amsthm}
 \RequirePackage{amsfonts}
 \RequirePackage{amssymb}
 \RequirePackage{mathtools}
 \RequirePackage{xparse}
 
-\NewDocumentCommand{\Ex}{O{} m}{%
-  \mathbb{E}_{#1}\left[ #2 \right]
+\NewDocumentCommand{\Ex}{e{_} d[]}{%
+  \mathbb{E}\IfNoValueF{#1}{_{#1}}\IfNoValueF{#2}{\left[ #2 \right]}
 }%
 
-\NewDocumentCommand{\Ug}{s O{}}{%
+\NewDocumentCommand{\Pb}{d()}{\mathbb{P}\IfNoValueF{#1}{\left( #1 \right)}}
+
+\NewDocumentCommand{\Ug}{s e{_}}{%
   \IfBooleanTF #1 {%
     \overline{\mathcal{U}}
   }{%
-    \mathcal{U}_{#2}
+    \mathcal{U}\IfNoValueF{#2}{_{#2}}
   }
 }
 
-\NewDocumentCommand{\Lg}{o}{%
-  \IfNoValueTF{#1}{%
-    \mathcal{L}
-  }{%
-    \mathcal{L}_{#1}
-  }
+\NewDocumentCommand{\Lg}{e{_}}{%
+  \mathcal{L}\IfNoValueF{#1}{_{#1}}
 }
 
 \NewDocumentCommand{\N}{s}{
-  \mathbb{N}\IfNoValueF{#1}{^*}
+  \mathbb{N}\IfBooleanT{#1}{^*}
 }
 
 \newcommand{\cl}[1]{\mathcal{#1}}
@@ -36,7 +34,6 @@
 \newcommand{\dequal}{\overset{d}{=}}
 \newcommand{\dconv}{\xrightarrow{d}}
 \newcommand{\pconv}{\xrightarrow{p}}
-\newcommand{\Pb}[1]{\mathbb{P}\left( #1 \right)}
 %\newcommand{\Ex}[1]{\mathbb{E}\left[ #1 \right]}
 \newcommand{\set}[1]{\left\{ #1 \right\}}
 \newcommand{\pp}{2^{[p]}}
@@ -53,10 +50,25 @@
   \right|_{#2} % this is the delimiter
   }}
   
-\newtheorem{theorem}{Theorem}
+  \newcommand{\Oplus}{\ensuremath{\vcenter{\hbox{\scalebox{1.5}{$\oplus$}}}}}
+  
 
 % \renewcommand{\epsilon}{\varepsilon}
 % \renewcommand{\theta}{\vartheta}
 % \renewcommand{\kappa}{\varkappa}
 % \renewcommand{\rho}{\varrho} 
 \renewcommand{\phi}{\varphi}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[theorem]
+\newtheorem{cor}{Corollary}[theorem]
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}
+
+\newcommand{\lemmaautorefname}{Lemma}
+\newcommand{\corautorefname}{Corollary}
+
