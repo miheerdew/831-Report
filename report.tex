@@ -30,11 +30,14 @@ bibencoding=ascii
 
 \section{Introduction}
 
-Graphs are fundamental objects in discrete mathematics. 
-All the results are from \cite{paper}.
+Networks (and large networks) are ubiquitous in the real world. For instance, the human social network, about 7 billion nodes in size, determines the spread of ideas, news and diseases over the world. The human brain, which is a network of neurons, has about 100 billion nodes. And then of course there is the internet network, consisting of about 30 billion web-pages and probably more than a billion interconnected devices. With the advent of computers, our ambitions rose, and now we wish to understand these large networks. 
 
+Graphs are mathematical models of networks and fundamental objects in discrete mathematics and computer science. Traditionally, lot of lot of efficient algorithms have been developed for graphs (shortest path, connectivity)  and computers today are fast as well. Despite this its not easy to deal with networks this large. Moreover we may not be interested in the exact quantities that traditional graph theory studies. For instance, consider the internet network. Does it make sense to ask if the internet is connected? Almost always, there will be some node which isn't connected. Moreover the internet network might not be exactly what it was a few minutes ago. But we may still be interested in quantities like the fraction of edges that need to be severed to divide the internet into two massive chunks. 
+
+Such questions can be asked by sampling the network, and providing approximate answers to these questions quickly. The theory of graph limits that this report will dive into, develops the theory for sampling from large networks. But a caveat before we start: this theory is only useful for dense graphs (which a positive fraction of edges of the complete graph). See \cite{lovasz-book} for applications of the sampling methodology and further details.
 
 \subsection{Notation}
+\label{sec:notation}
 
 Let $\N* \coloneqq \N \cup \set{\infty}$, $[n] \coloneqq \set{1,2,\dots,n}$ for $n \in \N$ and $[\infty] \coloneqq \N$.
 
@@ -46,9 +49,9 @@ For $G_1, G_2 \in \Lg_{n}$, the relation $G_1 \subseteq G_2$ will denote the rel
 
 Often, we are only interested in graphs up to a permutation of the vertices. That is, for $G, G' \in \Lg_{n}$ say $G \equiv G'$ if there is a permutation $\phi$ of $[n]$ so that $(i,j) \in E(G) \iff (\phi(i),\phi(j)) \in E(G')$. This is an equivalence relation, and its equivalence classes will denote unlabeled graphs. Hence formally, $\Ug_{n} \coloneqq \Lg_{n}/\equiv$ denotes the set of all unlabeled graphs on $[n]$ and $\Ug \coloneqq \bigcup_{n \in \N} \Ug_{n}$ is the set of all finite unlabeled graphs.
 
-If $G$ is a finite (unlabeled) graph and $(v_i)_{i \in [k]}$ for $k \in \N*$ is a sequence of vertices in $G$, then $G((v_i)_{i \in [k]})$ denotes the labeled graph on vertex set $[k]$ where we put an edge between $i$ and $j$ if $(v_i, v_j) \in E(G)$. Note that we allow for vertices to repeat (if $v_i = v_j$ there there is no edge $(i, j)$ in $G((v_i)_{i \in [n]})$).
+If $G$ is a finite graph and $v_1,\dots,v_k$ for $k \in \N$ is a sequence of vertices in $G$, then $G(v_1,\dots,v_k)$ denotes the labeled graph on vertex set $[k]$ where we put an edge between $i$ and $j$ if $(v_i, v_j) \in E(G)$. Note that we allow for vertices to repeat (if $v_i = v_j$ there there is no edge $(i, j)$ in $G(v_1, \dots, v_k)$).
 
-We let $G[k]$, for $k \in \N*$ be the random graph $G((V_i)_{i \in [k]})$ obtained by sampling $(V_i)_{i \in [k]}$ uniformly at random among the vertices of $G$ with replacement. Similarly, for $k \leq v(G) < \infty$, $G[k]'$ is the random graph $(V'_i)_{i \in \N}$ sampled uniformly at random without replacement. Hence $G[k]$ and $G'[k]$ are random graphs on $\Lg_{k}$ obtained obtained $G \in \Ug$. 
+We let $G[k]$, for $k \in \N$ be the random graph $G(V_1,\dots,V_k)$ obtained by sampling $V_1,\dots,V_k$ uniformly at random among the vertices of $G$ with replacement. Similarly, for $k \leq v(G) < \infty$, $G[k]'$ is the random graph $G(V'_1,\dots,V'_k)$ sampled uniformly at random without replacement. Hence $G[k]$ and $G'[k]$ are random graphs on $\Lg_{k}$ obtained from $G \in \Ug$. 
 
 
 \begin{figure}
@@ -66,8 +69,8 @@ We let $G[k]$, for $k \in \N*$ be the random graph $G((V_i)_{i \in [k]})$ obtain
 \end{figure}
 
 
-\section{Convergence of deterministic and random graphs}
-
+\section{Convergence of graphs}
+\label{sec:formal}
 In this section we will embed $\Ug$ (finite unlabeled graphs) in a compact metric space. This will be done through graph statistics.
 
 \subsection{Graph Statistic}
@@ -130,6 +133,7 @@ The graph limit theory developed in \cite{lovasz04} states that a sequence of gr
 
 \newcommand{\p}{0.5}
 \begin{example}
+  \label{ex:convergence}
   Consider the function $W: [0,1] \times [0,1] \to [0,1]$ given below (defined almost everywhere):
 
   \begin{tikzpicture}[scale=1, >=stealth]
@@ -202,10 +206,10 @@ The graph limit theory developed in \cite{lovasz04} states that a sequence of gr
 To formalize this concept of limit we identify $\Ug$ with the topological space $\tau^{+}(\Ug)$. Let $\Ug*$ be the closure of $\Ug$ in $[0,1]^{\Ug^+}$, and denote by $\Ug_{\infty} \coloneqq \Ug*\setminus \Ug$. Observe that 
 \begin{enumerate}
   \item $\Ug_{\infty} = \Ug* \cap  \left( [0,1]^{\Ug}\times \set{0} \right)$ as so $\Ug_\infty$ is closed.
-  \item $\Ug_{\infty} = \overline{\tau(\Ug)} \times \set{0}$ since $\tau$ is constant on blowups.
+  \item $\Ug_{\infty} = \overline{\tau(\Ug)} \times \set{0}$ since $\tau$ is constant on blowups. 
 \end{enumerate}
 
-Hence $\Ug_{\infty}$ can be identified $\overline{\tau(\Ug)}$ with the graph limits. Both $\Ug*$ and $\Ug_{\infty}$ are closed subsets of $[0,1]^{\Ug^+}$ and hence compact. The graph statistics $\tau(\cdot) = (t(F, \cdot))_{F \in \Ug}$ continuously (and uniquely) extend from $\Ug$ to $\Ug*$. Then $\tau$ is injective on $\Ug_{n}$ for any $n \in \N*$. Similarly extend $v$ by defining $v(G) = \infty$ on $\Ug_{\infty}$ so that each element $G \in \Ug*$ is just $\left( \tau(G), v(G)^{-1} \right) \in [0,1]^{\Ug^+}$.
+Hence $\Ug_{\infty}$ can be identified with the graph limits $\overline{\tau(\Ug)}$. In particular every $G \in \Ug$ is associated with a ghost $\tau(G)$ in $\Ug_{\infty}$. Both $\Ug*$ and $\Ug_{\infty}$ are closed subsets of $[0,1]^{\Ug^+}$ and hence compact. The graph statistics $\tau(\cdot) = (t(F, \cdot))_{F \in \Ug}$ continuously (and uniquely) extend from $\Ug$ to $\Ug*$. Then $\tau$ is injective on $\Ug_{n}$ for any $n \in \N*$. Similarly extend $v$ by defining $v(G) = \infty$ on $\Ug_{\infty}$ so that each element $G \in \Ug*$ is just $\left( \tau(G), v(G)^{-1} \right) \in [0,1]^{\Ug^+}$.
  
 
 We end this section with a lemma.
@@ -276,20 +280,90 @@ In this section we will analyze random elements and weak convergence in $\Ug*$. 
   Take $\Gamma_n = \Gamma$ in \autoref{cor:dconv8}.
 \end{proof}
 
-\section{Exchangeable Random Graphs}
-\subsection{Infinite Graphs}
-Describe the space of infinite graphs and weak convergence there.
+\section{Graph limits and exchangeable random graphs}
+\label{sec:sampling-distribution}
 
-\begin{theorem}
+In the previous section we formally constructed a compact metric space $\Ug*$ and the space $\Ug_{\infty}$ of graph limits. We also examined weak-convergence of $\Ug_{\infty}$ valued random elements. In this section we will see (\autoref{thm:corres}) another representation for probability measures on $\Ug_{\infty}$ in terms of exchangeable probability measures on $\Lg_{\infty}$.
+
+\subsection{Infinite Graphs}
+
+In this section we will look at graphs with vertex set $\N = \set{1, 2, 3, \ldots}$.  The set of all such graphs is denoted by $\Lg_{\infty}$. These graphs are determined by their edge set hence $\Lg_{\infty}$ can be identified by $\set{0,1}^{E(K_{\infty})}$ where $K_\infty$ is the complete graph on $\N$. We give this space (and thus $\Lg_{\infty}$) the product topology. Hence $\Lg_{\infty}$ is a compact metric space.
+
+Sometimes we will associate a $G \in \Lg_{n}$ with an infinite graph obtained by adding isolated vertices for $\set{n+1, n+2, \ldots}$. For $H \in \Lg_{\infty}$ the restriction operation $\restr{H}{[k]} = H(1,\dots,k)$ will denote the induced subgraph (in $\Lg_{k}$) on vertices $[k]$. 
+
+For a finite graph $G$, we can also define the sampling graph $G[\infty]$ by taking an i.i.d random sample $V_1, V_2,\cdots$ from $V(G)$ and defining $G[\infty] \coloneqq G(V_1, V_2, \ldots)$ to be the random graph (in $\Lg_{\infty}$) induced by these vertices. Note that the random graphs $G[k]$ for $k \in \N$ satisfy $G[k] \dequal \restr{G[\infty]}{[k]}$. And since the topology on $\Lg_{\infty}$ is the product topology on $\set{0,1}^{E(K_\infty)}$, any random graph $H \in \Lg_{\infty}$ uniquely determined by its distributions $\restr{H}{k}$ on $\Lg_{\infty}$. Moreover for random graphs $H_n \in \Lg_{\infty}$, $H_n \dconv H \in \Lg_{\infty}$ if and only if $\restr{H_n}{[k]} \dconv \restr{H}{k}$ for every $k \in \N$.
+
+If $G$ is a finite graph, let $\h{G}$ denote the finite graph obtained by randomly labeling the vertices of $G$ by $1,\dots, v(G)$. In other words $\h{G} = G[v(G)]$ is a random graph on $\Lg_{v(G)}$.  We will at times consider this as a random graph on $\Lg_{\infty}$ as mentioned above. The thing to note is the as $v(G) \to \infty$ for any $k \in \N$, $\restr{\h{G}}{k}$ has nearly the same distribution as $G[k]$. Note this while trying to understand \autoref{thm:constr} along with the following comment.
+
+As a motivation for what follows, let us look at a (non-random) sequence of graph $(G_n)_{n \in \N} \subseteq \Ug$ with $v(G_n) \to \infty$. Then $t(F, G_n) = \Pb(F \subseteq G_n[k])$ converge for every $F \in \Ug$ if and only if for all $k \in \N$, $G_n[k] \dconv \cdot $ and equivalently $G_n[\infty] \dconv \gamma$ for some random graph $\gamma \in \Lg_{\infty}$. This construction associates a random infinite graph $\gamma$ to every graph limit. \autoref{thm:constr} shows that this construction extends to random elements in the space of graph limits ($\Ug_{\infty}$) and will finally \autoref{thm:corres} be used to show a one-to-one correspondence between distributions on graph limits and class of random graphs on $\Lg_{\infty}$.
+
+\begin{theorem}[{\cite{paper}[Theorem~4.1]}]
+  \label{thm:constr}
    Let $\left( G_n \right)$ be a sequence of random graphs in $\Ug$ and assume that $v(G_n) \to \infty$. Then the following are equivalent.
   \begin{enumerate}
     \item $G_n \dconv \Gamma$ in $\Ug*$ for some random variable $\Gamma \in \Ug*$
-    \item $\widehat{G_n} \dconv H$ in $\Lg$ for some random $H \in \Lg$
+    \item $G_n[\infty] \dconv H$ in $\Lg_{\infty}$ for some random $H \in \Lg_{\infty}$
+    \item $\h{G_n} \dconv H$ in $\Lg_{\infty}$ for some random $H \in \Lg_{\infty}$
   \end{enumerate}
-  If these hold, then $\Pb{\restr{H}{[k]} = F} = \Ex[ t_{ind}(F, \Gamma) ]$ for every $F \in \Lg[k]$. Furthermore, $\Gamma \in \Ug[\infty]$ a.s
-   
+  If these hold, then $\Pb(F \subseteq \restr{H}{[k]}) = \Ex[t(F, \Gamma)]$ for every $F \in \Lg_{k}$. Furthermore, $\Gamma \in \Ug_{\infty}$ a.s
   \label{thm:conv-to-infinite-graphs}
 \end{theorem}
+
+\subsection{Exchangeable random graphs}
+\begin{definition}
+  A random graph $H \in \Lg_{\infty}$ is said to be \emph{exchangeable} if its distribution is invariant under every permutation of vertices. 
+\end{definition}
+
+It is actually sufficient to check that the distribution of $H$ is invariant under finite permutations, i.e any permutation $\phi: \N \to \N$ so that $\set{i | \phi(i) \neq i}$ is finite. This is because joint distributions are determined by finite dimensional distributions.
+
+\begin{lemma}
+  \label{lem:exch}
+  Let $H$ be a random infinite graph in $\Lg_{\infty}$. Then the following are equivalent
+  \begin{enumerate}[label=(\roman*)]
+    \item $H$ is exchangeable.
+    \item $\restr{H}{[k]}$ has a distribution invariant under all permutations of $[k]$ for every $k \geq 1$.
+    \item $\Pb(F = \restr{H}{[k]})$ depends only on the isomorphism type of $F$, and can thus be seen as a function of $F$ as an unlabeled graph in $\Ug_{k}$ for every $k \geq 1$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{theorem}[{\cite{paper}[Theorem~5.3]}]
+  \label{thm:corres}
+  There is one-to-one correspondence between distributions of random elements $\Gamma \in \Ug_{\infty}$ and distributions of exchangeable random graphs $H \in \Lg_{\infty}$ given by
+  \begin{equation}
+    \Ex t(F, \Gamma) = \Pb(F \subseteq \restr{H}{[k]})
+    \label{eq:corres}
+  \end{equation}
+  for every $k \geq 1$ and $F \in \Lg_{k}$. Furthermore $\restr{H}{[n]} \dconv \Gamma$ in $\Ug*$ as $n \to \infty$.
+\end{theorem}
+
+\begin{cor}
+  The correspondence in \autoref{thm:corres} is a homeomorphism.
+\end{cor}
+\begin{proof}
+  Suppose $H_n \sim \Gamma_n$ and $H \sim \Gamma$ where $(H_n)_{n \in \N}, H$ are random graphs in $\Lg_{\infty}$ and $(\Gamma_n)_{n \in \N}, \Gamma$ are random elements in $\Ug_{\infty}$.
+  As we have stated, $H_n \dconv H$ in $\Lg_{\infty}$ if and only if for every $k \geq 1$, $\restr{H_n}{[k]} \dconv \restr{H}{[k]}$.
+  Similarly by \autoref{cor:dconv8} $\Gamma_n \to \Gamma$ if and only if for every $F \in \Ug$, $\Ex t(F, \Gamma_n) \to \Ex t(F, \Gamma)$. Hence combining this with \eqref{eq:corres}, we get $\Gamma_n \dconv \Gamma$ if and only if $H_n \dconv H$.
+\end{proof}
+\begin{cor}
+  \label{cor:extreme-corres}
+  \autoref{thm:corres} gives a one-to-one correspondence between elements $\Gamma$ of $\Ug_{\infty}$ and the extreme points of the set of distributions of exchangeable random infinite graphs $H \in \Gamma$. This correspondence is given by
+  \begin{equation}
+    t(F, \Gamma) = \Pb(F \subseteq \restr{H}{[k]})
+    \label{eq:extreme-corres}
+  \end{equation}
+  for every $F \in \Lg_{k}$. Furthermore, $\restr{H}{n} \xrightarrow{a.s} \Gamma$ in $\Ug*$ as $n \to \infty$.
+\end{cor}
+\begin{proof}
+  The extreme points of the set of distributions on $\Ug_{\infty}$ are point masses. Since the correspondence from \eqref{eq:corres} is affine (in the space of probability measures on both sides), the extreme points must be in correspondence with each other. 
+\end{proof}
+
+\section{Conclusion}
+
+In \autoref{sec:formal} we formally embedded the set of unlabeled graphs in a compact metric space using the graph statistics \eqref{eq:stat-def}. \autoref{ex:convergence} and \autoref{fig:convergence} take a concrete example to explain this convergence and the intuition therein can be made precise using the cut metric (\cite[p.~127]{lovasz-book}) in the space of Graphons.
+
+In \autoref{sec:sampling-distribution} we define the space $\Lg_{\infty}$ of infinite labeled graphs and show that the convergence of graphs $G_n$ is exactly the convergence of their sampling distributions $G_n[\infty]$ (which are exchangeable distributions on $\Lg_{\infty}$). Next, \autoref{thm:corres} directly allow us to establish a one to one correspondence (in-fact a homeomorphism) between probability measures on the graph limits $\Ug_{\infty}$ and distributions of exchangeable random graphs on $\Lg_{\infty}$. Further this (\autoref{cor:extreme-corres}) provides a correspondence between graph limits $\Ug_{\infty}$ and extreme points in the space of distributions of exchangeable random graphs on $\Lg_{\infty}$.
+
+Now moving ahead, Graphons (see \cite{lovasz-book}) complete this picture here. Graphons are just functions $W: [0,1] \times [0,1] \to [0,1]$, which for instance we used in \autoref{ex:convergence} to generate graphs with ``Structure + Randomness''. They enter the picture in at least two ways. For every $\Gamma \in \Ug_{\infty}$ there is a Graphon $\Gamma_W$ so that, first by the Aldous-Hoover representation theorem (\cite{aldous}), it provides a way to sample (using a process similar to that in \autoref{ex:convergence}) the extreme exchangeable distribution on $\Lg_{\infty}$ corresponding to $\Gamma$. Secondly for a sequence of graphs $G_n$ converging to $\Gamma$, it provides a more direct definition of convergence to $\Gamma_W$ using the cut metric.
 
 \printbibliography
 \end{document}
